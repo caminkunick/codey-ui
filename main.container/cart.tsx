@@ -1,14 +1,12 @@
 import {
   faCashRegister,
   faShoppingCart,
-  faTrash,
 } from "@fortawesome/pro-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   Avatar,
   Badge,
   Button,
-  ButtonGroup,
   IconButton,
   ListItem,
   ListItemIcon,
