@@ -2,6 +2,7 @@ import { createTheme, ThemeProvider } from "@mui/material";
 import { FirebaseApp } from "firebase/app";
 import { onAuthStateChanged } from "firebase/auth";
 import { ReactNode, useEffect, useReducer } from "react";
+import { defaultTheme } from "./default.theme";
 import { MainContext, MainState } from "./state";
 
 export * from "./state";
@@ -14,7 +15,7 @@ export type ProviderProps = {
 
 export const Provider = (props: ProviderProps) => {
   const [state, dispatch] = useReducer(MainState.reducer, new MainState());
-  const theme = createTheme();
+  const theme = createTheme(defaultTheme());
 
   useEffect(() => {
     dispatch({ type: "app", value: props.app });

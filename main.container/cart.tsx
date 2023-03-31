@@ -18,18 +18,20 @@ import {
   Typography,
 } from "@mui/material";
 import { ActionIcon } from "codey-ui/action.icon";
+import { CartItem } from "ctrls/cuser";
+import { Product } from "ctrls/product";
 import { useState } from "react";
 import { useStore } from "../provider";
 
 export const MCCart = () => {
-  const { state, dispatch } = useStore();
+  const { state } = useStore();
   const [anchorEl, setAnchorEl] = useState<Element | null>(null);
 
-  return (
+  return state.user ? (
     <>
       <Badge
         overlap="circular"
-        badgeContent={state.Cart().amount()}
+        badgeContent={state.userdata.cart.length}
         color="primary"
       >
         <IconButton onClick={({ currentTarget }) => setAnchorEl(currentTarget)}>
@@ -53,7 +55,7 @@ export const MCCart = () => {
           },
         }}
       >
-        {state.cart.map((cart) => (
+        {state.userdata.cart.map((cart) => (
           <ListItem key={cart.id}>
             <ListItemIcon>
               <Avatar variant="square" src={cart.feature} />
@@ -70,14 +72,8 @@ export const MCCart = () => {
               secondaryTypographyProps={{ component: "div" }}
             />
             <ListItemSecondaryAction>
-              <ActionIcon.INC
-                onClick={() => dispatch({ type: "cart-inc", value: cart.id })}
-              />
-              <ActionIcon.DEC
-                onClick={() => dispatch({ type: "cart-dec", value: cart.id })}
-              />
               <ActionIcon.Remove
-                onClick={() => dispatch({ type: "cart-rem", value: cart.id })}
+                onClick={() => state.user && CartItem.remove(state.user, cart)}
               />
             </ListItemSecondaryAction>
           </ListItem>
@@ -93,7 +89,7 @@ export const MCCart = () => {
               >
                 <Typography>รวมทั้งหมด</Typography>
                 <Typography variant="h6" color="primary" fontWeight="bold">
-                  {state.Cart().sum()}
+                  {state.userdata.Cart().sum()}
                 </Typography>
                 <Typography>Point</Typography>
               </Stack>
@@ -106,11 +102,12 @@ export const MCCart = () => {
             fullWidth
             variant="contained"
             startIcon={<FontAwesomeIcon icon={faCashRegister} />}
+            onClick={() => state.user && Product.buy(state.user)}
           >
             ชำระเงิน
           </Button>
         </ListItem>
       </Menu>
     </>
-  );
+  ) : null;
 };

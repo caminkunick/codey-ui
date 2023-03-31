@@ -1,4 +1,10 @@
-import { Box, Button, Grid, styled, Typography } from "@mui/material";
+import {
+  faCheck,
+  faShoppingCart,
+  faXmark,
+} from "@fortawesome/pro-regular-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Box, Button, Grid, Skeleton, styled, Typography } from "@mui/material";
 import { blueGrey } from "@mui/material/colors";
 
 export const CardContainer = styled(Grid)({});
@@ -25,6 +31,7 @@ const Feature = styled("img")({
   aspectRatio: "4 / 3",
   border: "none",
   objectFit: "cover",
+  boxSizing: "border-box",
 });
 
 const Content = styled(Box)({
@@ -34,16 +41,12 @@ const Content = styled(Box)({
 });
 
 const PriceButton = styled(Button)({
-  backgroundColor: blueGrey[800],
   borderRadius: 16,
   paddingInline: 24,
   height: 36,
   marginTop: -18,
   boxSizing: "border-box",
   transition: "all 0.25s",
-  "&:hover": {
-    backgroundColor: blueGrey[900],
-  },
 });
 PriceButton.defaultProps = {
   variant: "contained",
@@ -54,7 +57,10 @@ export type CardProps = {
   price: number;
   title: string;
   desc: string;
+  cart: boolean;
+  purchased: boolean;
   onAddCart: () => void;
+  onRemoveCart: () => void;
 };
 
 export const Card = (props: CardProps) => {
@@ -63,9 +69,30 @@ export const Card = (props: CardProps) => {
       <Root>
         <Feature src={props.feature} />
         <Box display="flex" justifyContent="flex-end" pr={4}>
-          <PriceButton onClick={props.onAddCart}>
-            ราคา {props.price}
-          </PriceButton>
+          {props.purchased ? (
+            <PriceButton
+              color="success"
+              startIcon={<FontAwesomeIcon icon={faCheck} />}
+            >
+              ซื้อแล้ว
+            </PriceButton>
+          ) : props.cart ? (
+            <PriceButton
+              color="error"
+              onClick={props.onRemoveCart}
+              startIcon={<FontAwesomeIcon icon={faXmark} />}
+            >
+              ลบจากรถเข็น
+            </PriceButton>
+          ) : (
+            <PriceButton
+              color="neutral"
+              onClick={props.onAddCart}
+              startIcon={<FontAwesomeIcon icon={faShoppingCart} />}
+            >
+              {props.price} P
+            </PriceButton>
+          )}
         </Box>
         <Content>
           <Typography variant="h6" fontWeight="bold">
@@ -73,6 +100,26 @@ export const Card = (props: CardProps) => {
           </Typography>
           <Typography variant="body2" pl={2}>
             {props.desc}
+          </Typography>
+        </Content>
+      </Root>
+    </Grid>
+  );
+};
+export const CardLoading = () => {
+  return (
+    <Grid item xs={12} sm={6} md={4}>
+      <Root>
+        <Skeleton
+          variant="rectangular"
+          sx={{ height: "auto", aspectRatio: "4 / 3", width: "100%" }}
+        />
+        <Content>
+          <Typography variant="h6" fontWeight="bold">
+            <Skeleton />
+          </Typography>
+          <Typography variant="body2" pl={2}>
+            <Skeleton />
           </Typography>
         </Content>
       </Root>
