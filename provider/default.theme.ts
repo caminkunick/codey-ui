@@ -16,6 +16,12 @@ declare module "@mui/material/Button" {
   }
 }
 
+declare module "@mui/material/styles/createMixins" {
+  interface Mixins {
+    fixedFluid: CSSProperties;
+  }
+}
+
 export const defaultTheme = (dark: boolean = false): ThemeOptions => ({
   palette: {
     neutral: {
@@ -23,5 +29,16 @@ export const defaultTheme = (dark: boolean = false): ThemeOptions => ({
       contrastText: "#FFFFFF",
     },
     mode: dark ? "dark" : "light",
+  },
+  mixins: {
+    fixedFluid: {
+      position: "fixed",
+      width: "100%",
+      height: "100%",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+    },
   },
 });

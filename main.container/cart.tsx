@@ -1,6 +1,7 @@
 import {
   faCashRegister,
   faShoppingCart,
+  faSpinner,
 } from "@fortawesome/pro-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -26,6 +27,15 @@ import { useStore } from "../provider";
 export const MCCart = () => {
   const { state } = useStore();
   const [anchorEl, setAnchorEl] = useState<Element | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const handlePurchase = async () => {
+    if (state.user) {
+      setLoading(true);
+      await Product.buy(state.user);
+      setLoading(false);
+    }
+  };
 
   return state.user ? (
     <>
@@ -74,6 +84,7 @@ export const MCCart = () => {
             <ListItemSecondaryAction>
               <ActionIcon.Remove
                 onClick={() => state.user && CartItem.remove(state.user, cart)}
+                disabled={loading}
               />
             </ListItemSecondaryAction>
           </ListItem>
@@ -101,8 +112,14 @@ export const MCCart = () => {
           <Button
             fullWidth
             variant="contained"
-            startIcon={<FontAwesomeIcon icon={faCashRegister} />}
-            onClick={() => state.user && Product.buy(state.user)}
+            startIcon={
+              <FontAwesomeIcon
+                icon={loading ? faSpinner : faCashRegister}
+                pulse={loading}
+              />
+            }
+            onClick={handlePurchase}
+            disabled={loading}
           >
             ชำระเงิน
           </Button>

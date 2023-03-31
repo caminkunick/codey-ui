@@ -1,13 +1,22 @@
+import { faSignIn, faSpinner } from "@fortawesome/pro-regular-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   AppBar,
   Box,
+  Button,
   Container,
+  IconButton,
+  Stack,
   styled,
   Toolbar,
   Typography,
 } from "@mui/material";
 import { blueGrey } from "@mui/material/colors";
+import { LoadingText } from "codey-ui/loading.text";
+import { useStore } from "codey-ui/provider";
+import { DiscordDev } from "ctrls/discord";
 import { ReactNode } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { MCCart } from "./cart";
 import { MCSigned } from "./signed";
 import { MCUnsigned } from "./unsinged";
@@ -37,20 +46,77 @@ const Footer = styled(Box)({
   color: "white",
 });
 
+const LoadingIcon = () => (
+  <IconButton disabled>
+    <FontAwesomeIcon icon={faSpinner} pulse />
+  </IconButton>
+);
+
 export type MainContainerProps = {
   children?: ReactNode;
+  signInOnly?: boolean;
 };
 
 export const MainContainer = (props: MainContainerProps) => {
+  const {
+    menu,
+    state: { loading, user },
+  } = useStore();
+  const nav = useNavigate();
+
+  if (props.signInOnly) {
+    if (loading) {
+      return (
+        <Box sx={(theme) => theme.mixins.fixedFluid}>
+          <LoadingText label="Loading" />
+        </Box>
+      );
+    }
+    if (!user) {
+      return (
+        <Box sx={(theme) => theme.mixins.fixedFluid}>
+          <Button
+            variant="outlined"
+            startIcon={<FontAwesomeIcon icon={faSignIn} />}
+            size="large"
+            LinkComponent="a"
+            href={DiscordDev.genURL()}
+          >
+            Sign In
+          </Button>
+        </Box>
+      );
+    }
+  }
+
   return (
     <>
       <MainAppBar>
         <Container maxWidth="md">
           <Toolbar disableGutters>
+            <Link to="/" style={{ display: "block" }}>
+              <img
+                src={`${process.env.REACT_APP_LOGO}`}
+                alt="logo"
+                style={{ display: "block", height: 48, width: "auto" }}
+              />
+            </Link>
+            {menu && (
+              <Stack direction="row" spacing={1}>
+                {menu.map((item, index) => (
+                  <Button
+                    color="neutral"
+                    key={index}
+                    onClick={() => nav(item.url)}
+                  >
+                    {item.label}
+                  </Button>
+                ))}
+              </Stack>
+            )}
             <Box flex={1} />
-            <MCUnsigned />
-            <MCSigned />
             <MCCart />
+            {loading ? <LoadingIcon /> : user ? <MCSigned /> : <MCUnsigned />}
           </Toolbar>
         </Container>
       </MainAppBar>

@@ -1,19 +1,12 @@
 import { createTheme, ThemeProvider } from "@mui/material";
-import { FirebaseApp } from "firebase/app";
 import { onAuthStateChanged } from "firebase/auth";
-import { ReactNode, useEffect, useReducer } from "react";
+import { useEffect, useReducer } from "react";
 import { defaultTheme } from "./default.theme";
-import { MainContext, MainState } from "./state";
+import { MainContext, MainState, ProviderProps } from "./state";
 
 export * from "./state";
 
-export type ProviderProps = {
-  children?: ReactNode;
-  app: FirebaseApp;
-  prefix: string;
-};
-
-export const Provider = (props: ProviderProps) => {
+export const Provider = ({ children, ...props }: ProviderProps) => {
   const [state, dispatch] = useReducer(MainState.reducer, new MainState());
   const theme = createTheme(defaultTheme());
 
@@ -30,8 +23,8 @@ export const Provider = (props: ProviderProps) => {
   }, [state.auth]);
 
   return (
-    <MainContext.Provider value={{ state, dispatch, prefix: props.prefix }}>
-      <ThemeProvider theme={theme}>{props.children}</ThemeProvider>
+    <MainContext.Provider value={{ ...props, state, dispatch, prefix: props.prefix }}>
+      <ThemeProvider theme={theme}>{children}</ThemeProvider>
     </MainContext.Provider>
   );
 };

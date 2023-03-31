@@ -2,8 +2,15 @@ import { FirebaseApp } from "firebase/app";
 import { Firestore, getFirestore } from "firebase/firestore";
 import { Auth, getAuth } from "firebase/auth";
 import { User } from "firebase/auth";
-import { createContext, Dispatch, useContext } from "react";
+import { createContext, Dispatch, ReactNode, useContext } from "react";
 import { CUser } from "ctrls/cuser";
+
+export type ProviderProps = {
+  children?: ReactNode;
+  app: FirebaseApp;
+  prefix: string;
+  menu?: Record<"label" | "url", string>[];
+};
 
 export type CartItem = {
   id: string;
@@ -56,11 +63,13 @@ export class MainState {
   }
 }
 
-export const MainContext = createContext<{
-  state: MainState;
-  dispatch: Dispatch<MainStateAction>;
-  prefix: string;
-}>({
+export const MainContext = createContext<
+  Omit<ProviderProps, "children" | "app"> & {
+    state: MainState;
+    dispatch: Dispatch<MainStateAction>;
+    prefix: string;
+  }
+>({
   state: new MainState(),
   dispatch: () => {},
   prefix: "",
