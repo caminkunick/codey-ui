@@ -3,6 +3,8 @@ import { Firestore, getFirestore } from "firebase/firestore";
 import { Auth, getAuth } from "firebase/auth";
 import { User } from "firebase/auth";
 import { createContext, Dispatch, useContext } from "react";
+import { Product } from "ctrls/product";
+import { CUser } from "ctrls/cuser";
 
 export type CartItem = {
   id: string;
@@ -14,8 +16,9 @@ export type CartItem = {
 export type MainStateAction =
   | { type: "app"; value: FirebaseApp }
   | { type: "user"; value: User | null }
-  | { type: "cart-add"; value: CartItem }
-  | { type: "cart-rem" | "cart-inc" | "cart-dec"; value: string };
+  | { type: "cart-add"; value: Product }
+  | { type: "cart-rem" | "cart-inc" | "cart-dec"; value: string }
+  | { type: "userdata"; value: CUser };
 
 export class MainState {
   app: FirebaseApp | null;
@@ -24,6 +27,7 @@ export class MainState {
   loading: boolean;
   user: User | null;
   cart: CartItem[];
+  userdata: CUser;
 
   constructor(data?: Partial<MainState>) {
     this.app = data?.app ?? null;
@@ -32,16 +36,23 @@ export class MainState {
     this.loading = data?.loading ?? true;
     this.user = data?.user ?? null;
     this.cart = data?.cart ?? [];
+    this.userdata = data?.userdata ?? new CUser();
   }
 
   Cart() {
     return {
-      add: (value: CartItem): MainState => {
+      add: (value: Product): MainState => {
         const index = this.cart.findIndex((c) => c.id === value.id);
         if (index > -1) {
           this.cart[index].amount += 1;
         } else {
-          this.cart = this.cart.concat(value);
+          this.cart = this.cart.concat({
+            id: value.id,
+            feature: value.feature,
+            label: value.title,
+            price: value.price,
+            amount: 1,
+          });
         }
         return new MainState(this);
       },
@@ -95,6 +106,8 @@ export class MainState {
         return s.Cart().inc(action.value);
       case "cart-dec":
         return s.Cart().dec(action.value);
+      case "userdata":
+        return new MainState({ ...s, userdata: action.value });
       default:
         return s;
     }
