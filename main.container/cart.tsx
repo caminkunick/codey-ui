@@ -18,9 +18,9 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { ActionIcon } from "codey-ui/action.icon";
-import { CartItem } from "ctrls/cuser";
-import { Product } from "ctrls/product";
+import { ActionIcon } from "../action.icon";
+import { CartItem } from "../ctrls/cuser";
+import { Product } from "../ctrls/product";
 import { useState } from "react";
 import { useStore } from "../provider";
 

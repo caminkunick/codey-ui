@@ -1,4 +1,4 @@
-.loader {
+.codey-loader {
   position: relative;
   font-size: 2em;
   background: #fff;
@@ -12,12 +12,12 @@
   text-align: center;
 }
 
-.loader span {
+.codey-loader span {
   color: #fff;
   mix-blend-mode: difference;
 }
 
-.loader:before {
+.codey-loader:before {
   content: "";
   position: absolute;
   top: 0;

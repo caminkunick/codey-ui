@@ -3,7 +3,7 @@ import { Firestore, getFirestore } from "firebase/firestore";
 import { Auth, getAuth } from "firebase/auth";
 import { User } from "firebase/auth";
 import { createContext, Dispatch, ReactNode, useContext } from "react";
-import { CUser } from "ctrls/cuser";
+import { CUser } from "../ctrls/cuser";
 
 export type ProviderProps = {
   children?: ReactNode;
@@ -12,7 +12,7 @@ export type ProviderProps = {
   menu?: Record<"label" | "url", string>[];
 };
 
-export type CartItem = {
+export type CartItemType = {
   id: string;
   feature: string;
   label: string;

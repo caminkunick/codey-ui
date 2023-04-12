@@ -9,7 +9,7 @@ import {
   ListItemText,
   Menu,
 } from "@mui/material";
-import { useStore } from "codey-ui/provider";
+import { useStore } from "../provider";
 import { signOut } from "firebase/auth";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";

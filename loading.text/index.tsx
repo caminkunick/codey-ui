@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import styles from "./style.module.css";
+import "./style.css";
 
 export type LoadingTextProps = {
   width?: number;
@@ -8,7 +8,7 @@ export type LoadingTextProps = {
 
 export const LoadingText = (props: LoadingTextProps) => {
   return (
-    <Box className={styles.loader} width={props.width}>
+    <Box className="codey-loader" width={props.width}>
       <span>{props.label ?? "Loading"}</span>
     </Box>
   );

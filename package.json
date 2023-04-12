@@ -2,11 +2,26 @@
   "name": "codey-ui",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {}
+  "dependencies": {
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@fortawesome/fontawesome-svg-core": "^6.4.0",
+    "@fortawesome/pro-regular-svg-icons": "^6.4.0",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@mui/material": "^5.11.15",
+    "firebase": "^9.19.1",
+    "moment": "^2.29.4",
+    "swiper": "^9.2.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.17.16",
+    "nodemon": "^2.0.22",
+    "typescript": "^5.0.4"
+  }
 }
