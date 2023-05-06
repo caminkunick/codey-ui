@@ -28,6 +28,7 @@ export const MCCart = () => {
   const { state } = useStore();
   const [anchorEl, setAnchorEl] = useState<Element | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  
 
   const handlePurchase = async () => {
     if (state.user) {
