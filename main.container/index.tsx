@@ -12,9 +12,9 @@ import {
   Typography,
 } from "@mui/material";
 import { blueGrey } from "@mui/material/colors";
-import { LoadingText } from "codey-ui/loading.text";
-import { useStore } from "codey-ui/provider";
-import { DiscordDev } from "ctrls/discord";
+import { LoadingText } from "../loading.text";
+import { useStore } from "../provider";
+import { DiscordDev } from "../ctrls/discord";
 import { ReactNode } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { MCCart } from "./cart";
